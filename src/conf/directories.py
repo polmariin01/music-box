@@ -6,12 +6,14 @@ PATH_HOME   = "music-box"
 PATH_DB     = "db/"
 PATH_AUDIO  = PATH_DB + "audio/"
 PATH_PDF    = PATH_DB + "music_sheets_pdf/"
+PATH_UNFILTERED = PATH_DB + "no_filter/"
 PATH_WEB    = "html/"
 PATH_SCRIPTS= "scripts/"
 PATH_SRC    = "src/"
 PATH_CONV   = PATH_SRC + "convert/"
 PATH_EVAL   = PATH_SRC + "evaluation/"
-PATH_MUSIC  = PATH_SRC + "music"
+PATH_MUSIC  = PATH_SRC + "music/"
+PATH_CONF   = PATH_SRC + "conf/"
 
 def __gohome():
     if verbose: print("___GOHOME___")
@@ -51,4 +53,4 @@ print("\n\n")
 goto(PATH_PDF)
 
 '''
-print(musical_properties())
+#print(musical_properties())
