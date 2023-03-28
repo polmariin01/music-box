@@ -5,6 +5,7 @@ verbose : bool = False
 PATH_HOME   = "music-box"
 PATH_DB     = "db/"
 PATH_AUDIO  = PATH_DB + "audio/"
+PATH_MIDI   = PATH_DB + "midi/"
 PATH_PDF    = PATH_DB + "music_sheets_pdf/"
 PATH_UNFILTERED = PATH_DB + "no_filter/"
 PATH_WEB    = "html/"

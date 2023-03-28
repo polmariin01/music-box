@@ -29,7 +29,7 @@ def reset_json(name = "IDs.json", name2 = "existent.json"):
 
 def write_json(id=0, file_name : str =0, name = "IDs.json"):
     dir.goto(dir.PATH_CONF)
-    print(os.listdir())
+    #print(os.listdir())
     #json_file = open(name)
     #print(str(json_file) + "\n" + name)
     #json_dict = json.load(json_file)
@@ -75,7 +75,7 @@ def generate_ID(random = True, file_name = "existent.json"):
 
     while(IDexists(id)):        
         id = format(r.randint(0,999999), '06d')
-    print("Nova ID: " + id)
+    #print("Nova ID: " + id)
     return id
 
 def isTypeFile(file: str, ftype = "mp3"):
@@ -84,6 +84,9 @@ def isTypeFile(file: str, ftype = "mp3"):
         return file.endswith(ftype)
     return False
 
+def isMIDI(file : str):
+    return isTypeFile(file, ftype = "midi")
+
 def all_sort(v = False):
     dir.goto(dir.PATH_UNFILTERED)
 #   os.chdir(dir.PATH_UNFILTERED)
@@ -91,7 +94,8 @@ def all_sort(v = False):
     if len(arxius) < 1:
         print("Unfiltered directory empty.")
         return
-    arxius_mp3 = list(filter( isTypeFile, arxius))
+    arxius_mp3  = list(filter( isTypeFile, arxius))
+    arxius_midi = list(filter( isMIDI, arxius))
     if v:
         print("Llista arxius:\n" + str(arxius) + "\n")
         print("Llista arxius filtrats:\n" + str(arxius_mp3) + "\n")
@@ -105,6 +109,21 @@ def all_sort(v = False):
             #TODO actually moure i tal els arxius
             shutil.move(dir.PATH_UNFILTERED + files, dir.PATH_AUDIO + id + ".mp3")
             shutil.move(dir.PATH_UNFILTERED + pdf_name , dir.PATH_PDF + id + ".pdf")
+            print(">> NEW MP3 - ID: " + id + " : " + files)
+        else:
+            print(files + " has no PDF\n")
+
+    for files in arxius_midi:
+        dir.goto()
+        pdf_name = files.replace(".midi",".pdf")
+        if os.path.exists(dir.PATH_UNFILTERED + pdf_name):
+            id = generate_ID()
+            write_json(id = id, file_name = files)
+            dir.goto()
+            #TODO actually moure i tal els arxius
+            shutil.move(dir.PATH_UNFILTERED + files, dir.PATH_MIDI + id + ".mp3")
+            shutil.move(dir.PATH_UNFILTERED + pdf_name , dir.PATH_PDF + id + ".pdf")
+            print(">> NEW MIDI - ID: " + id + " : " + files)
         else:
             print(files + " has no PDF\n")
 
@@ -112,36 +131,27 @@ def all_sort(v = False):
 def main():
     args = sys.argv[1:]
     #all_sort()
-    all_list = ['all']
     print("MAIN\n****")
     # 1. Check for the arg pattern:
     #   python3 affirm.py -affirm Bart
     #   e.g. args[0] is '-affirm' and args[1] is 'Bart'
-    print(args)
+    #print(args)
     if len(args) >= 1:
-        if args[0] in all_list:
+        if args[0] in ['all','a']:
             print("ADD ALL SONGS")
             all_sort()
             # Funció principal, extreure tot
 
         elif args[0] in ['start','init','s','restart','reset']:
-            # Select random nice phrase
-            # affirmation = random.choice(AFFIRMATIONS)
-            # Print with the name in args[1]
-            #print(affirmation, args[1])
+            #Restaura els arxius IDs i existent, borra tot, reset
             print("RESTART JSONS")
             reset_json()
-        elif args[0] in all_list:
-            print("all")
+
+        elif args[0] in ['']:
+            help()
+        
         else:
-            print("No opció correcta")
-    # .. later if statements for -hello and -n ...
+            print("Opció incorrecta")
+        # .. later if statements for -hello and -n ...
 
-#all_sort()
-
-#random.randint()
-
-#create_json()
-#write_json("asdasdff", 12223)
-#write_json()
 main()
